@@ -1,0 +1,26 @@
+question Link : https://practice.geeksforgeeks.org/problems/max-sum-without-adjacents2430/1
+
+int solve(int i,int *arr, int n,vector<int>& dp){
+	    //base case
+	    if(i>=n){
+	        return 0;
+	    }
+	    //step 3:
+	    if(dp[i] != -1){
+	        return dp[i];
+	    }
+	    
+	    int inc = arr[i]+solve(i+2,arr,n,dp);
+	    int exc = 0 + solve(i+1,arr,n,dp);
+	    //step 2:
+	    //store ans in dp array
+	    return dp[i] = max(inc,exc);
+	}
+	int findMaxSum(int *arr, int n) {
+	    int ans;
+	    int i = 0;
+	    //step 1
+	    vector<int>dp(n+1,-1);
+	    ans = solve(i,arr,n,dp);
+	    return ans;
+	}
