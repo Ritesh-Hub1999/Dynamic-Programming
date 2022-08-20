@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+//rec+Memoization
+//step 1:create DP array and pass it in function
+//step 2: store ans in DP
+//step 3: check if dp array mai ans para hai ya nai and ans base case ka baad rakhna hai.
+int fib(int n,vector<int>dp){
+  //base case
+  if(n==0)
+    return 0;
+
+  if(n==1)
+    return 1;
+
+  if(dp[n]!=-1)
+    return dp[n];
+  int ans = fib(n-1,dp) + fib(n-2,dp);
+  //step : 2
+  dp[n] = ans;
+  return ans;
+}
+//top down approch
+int tabular(int n){
+  //step 1: DP array creation
+  vector<int>v(n+1,-1);
+
+  //srep2: analyis recursion basecase and put the changes in DP
+  v[0] = 0;
+  v[1] = 1;
+
+  //step3: for loop ki range dekho
+  for(int i=2;i<=n;i++){
+    int ans = v[i-1] + v[i-2];
+    v[i] = ans;
+  }
+  return v[n];
+}
+int main() {
+  int n;
+  cout<<"enter the value of n"<<endl;
+  cin>>n;
+  //step 1:
+  //vector<int>dp(n+1,-1);
+  cout<<"output of fibonacci"<<"->"<<tabular(n)<<endl;
+}
