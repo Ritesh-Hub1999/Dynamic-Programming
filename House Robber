@@ -1,0 +1,45 @@
+Question Link: https://leetcode.com/problems/house-robber/
+
+int solve(vector<int>& nums,int index,vector<int> &dp){
+        //base case 
+        //agr index size ka bahar chal jai tho return 0
+        if(index >= nums.size()){
+            return 0;
+        }
+        
+        
+        //include mai index + 2 hoga
+        int inc = nums[index] + solve(nums,index+2,dp);
+        //exclude mai index + 1 hoga
+        int exc = solve(nums,index+1,dp);
+        
+        
+        return max(inc,exc);
+    }
+    
+    int solveMem(vector<int>& nums,int index,vector<int> &dp){
+        //base case 
+        //agr index size ka bahar chal jai tho return 0
+        if(index >= nums.size()){
+            return 0;
+        }
+        //step 3: 
+        if(dp[index]!=-1){
+            return dp[index];
+        }
+        
+        //include mai index + 2 hoga
+        int inc = nums[index] + solveMem(nums,index+2,dp);
+        //exclude mai index + 1 hoga
+        int exc = solveMem(nums,index+1,dp);
+        
+        //step 2:store ans in dp array
+        return dp[index]=max(inc,exc);
+    }
+    int rob(vector<int>& nums) {
+        int index = 0;
+        //step 1:dp array create kro  
+        vector<int> dp(nums.size()+1,-1);
+        int sum = solveMem(nums,index,dp);
+        return sum;
+    }
