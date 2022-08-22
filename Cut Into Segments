@@ -15,13 +15,13 @@ int maxCutting(int n, int x, int y, int z){
         return INT_MIN;
     }
     
-    int first = maxCutting(n-x,x,y,z);
+    int first = maxCutting(n-x,x,y,z,dp) + 1;
     
-    int second = maxCutting(n-y,x,y,z);
+    int second = maxCutting(n-y,x,y,z,dp) + 1;
     
-    int third = maxCutting(n-z,x,y,z);
+    int third = maxCutting(n-z,x,y,z,dp) + 1;
     
-    return 1 + max(first,max(second,third));
+    return max(first,max(second,third));
 }
 int cutSegments(int n, int x, int y, int z) {
     int solve = maxCutting(n,x,y,z);
@@ -47,11 +47,11 @@ int maxCuttingMem(int n, int x, int y, int z,vector<int>& dp){
     if(dp[n]!=-1){
         return dp[n];
     }
-    int first = maxCutting(n-x,x,y,z,dp);
+    int first = maxCuttingMem(n-x,x,y,z,dp) + 1;
     
-    int second = maxCutting(n-y,x,y,z,dp);
+    int second = maxCuttingMem(n-y,x,y,z,dp) + 1;
     
-    int third = maxCutting(n-z,x,y,z,dp);
+    int third = maxCuttingMem(n-z,x,y,z,dp) + 1;
     //step 2: dp ka array 
     return dp[n] = 1 + max(first,max(second,third));
 }
