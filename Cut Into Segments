@@ -24,9 +24,45 @@ int maxCutting(int n, int x, int y, int z){
     return 1 + max(first,max(second,third));
 }
 int cutSegments(int n, int x, int y, int z) {
-	int solve = maxCutting(n,x,y,z);
+    int solve = maxCutting(n,x,y,z);
     if(solve < 0){
         return 0;
     }
     return solve;
 }
+
+//recursion + Memo
+
+#include <limits.h>
+#include <vector>
+int maxCuttingMem(int n, int x, int y, int z,vector<int>& dp){
+    //base case
+    if(n == 0)
+        return 0;
+    
+    if(n<0){
+        return INT_MIN;
+    }
+    
+    if(dp[n]!=-1){
+        return dp[n];
+    }
+    int first = maxCutting(n-x,x,y,z,dp);
+    
+    int second = maxCutting(n-y,x,y,z,dp);
+    
+    int third = maxCutting(n-z,x,y,z,dp);
+    //step 2: dp ka array 
+    return dp[n] = 1 + max(first,max(second,third));
+}
+int cutSegments(int n, int x, int y, int z) {
+    //step 1: create a dp array
+    vector<int> dp(n+1,-1);
+	int solve = maxCuttingMem(n,x,y,z,dp);
+    if(solve < 0){
+        return 0;
+    }
+    return solve;
+}
+
+
