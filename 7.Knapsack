@@ -28,3 +28,32 @@ int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight)
 	  int ans = solve(weight,value,index,maxWeight);
     return ans;
 }
+
+//DP + Memo
+int solve(vector<int>& weight, vector<int>& value, int i, int capacity,vector<vector<int>>& dp,int n){
+    //base case
+    if(i == value.size() || capacity == 0)
+        return 0;
+    
+    if(dp[i][capacity]!=-1)
+        return dp[i][capacity];
+    
+    int include =0;
+    
+    //jab capacity zyda hogi weight ka value sa ya barabar hogi tabhi include karenga humlog
+    
+    if(capacity >= weight[i])
+        include = value[i] + solve(weight,value,i+1,capacity - weight[i],dp,n);
+    
+    int exculde = solve(weight,value,i+1,capacity,dp,n);
+    
+    return dp[i][capacity]=max(include,exculde);
+    
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+    int index = 0;
+    vector<vector<int>>dp(n+1,vector<int>(maxWeight+1,-1));
+	int ans = solve(weight,value,index,maxWeight,dp,n);
+    return ans;
+}
