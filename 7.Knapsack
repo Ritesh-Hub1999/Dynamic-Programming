@@ -1,0 +1,30 @@
+https://www.codingninjas.com/codestudio/problems/0-1-knapsack_920542?topList=love-babbar-dsa-sheet-problems&leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
+i/p:
+val[] -> [60,100,120]
+wt[] -> [10,20,30]
+
+o/p: 220
+
+int solve(vector<int>& weight, vector<int>& value, int i, int capacity){
+    //base case
+    if(i == value.size() || capacity == 0)
+        return 0;
+    
+    int include =0;
+    
+    //jab capacity zyda hogi weight ka value sa ya barabar hogi tabhi include karenga humlog
+    
+    if(capacity >= weight[i])
+        include = value[i] + solve(weight,value,i+1,capacity - weight[i]);
+    
+    int exculde = solve(weight,value,i+1,capacity);
+    
+    return max(include,exculde);
+    
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+    int index = 0;
+	  int ans = solve(weight,value,index,maxWeight);
+    return ans;
+}
