@@ -1,0 +1,58 @@
+https://leetcode.com/problems/perfect-squares/
+
+Example 1:
+Input: n = 12
+Output: 3
+Explanation: 12 = 4 + 4 + 4.
+
+Example 2:
+Input: n = 13
+Output: 2
+Explanation: 13 = 4 + 9.
+
+ex: 13 ka nicha kon konsa perfect square honga 
+     |
+     9 -> 3^2
+     |
+     4 ->2^2
+     |
+     1 ->1^1
+int solve(int n){
+        //base case
+        if(n == 0)
+            return 0;
+        
+        int mini = INT_MAX;
+        
+        //1 islia add kr rha hai ki yeah darsa raha h ki humna sara i ka value ko square kia            tha
+        for(int i=1;i*i<=n;i++){
+            int ans = 1 + solve(n-i*i);
+            mini = min(mini,ans);
+        }
+        return mini;
+    }
+    int numSquares(int n) {
+        return solve(n);
+    }
+
+rec +MeMo
+int solve(int n,vector<int>& dp){
+        //base case
+        if(n <=0)
+            return 0;
+        
+        int mini = INT_MAX;
+        
+        if(dp[n]!=-1)
+            return dp[n];
+        //1 islia add kr rha hai ki yeah darsa raha h ki humna sara i ka value ko square kia            tha
+        for(int i=1;i*i<=n;i++){
+            int ans = 1 + solve(n-i*i,dp);
+            mini = min(mini,ans);
+        }
+        return dp[n]=mini;
+    }
+    int numSquares(int n) {
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
+    }
