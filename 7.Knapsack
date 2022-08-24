@@ -1,12 +1,17 @@
 https://www.codingninjas.com/codestudio/problems/0-1-knapsack_920542?topList=love-babbar-dsa-sheet-problems&leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
 i/p:
+Knapsack Weight = 50
 val[] -> [60,100,120]
 wt[] -> [10,20,30]
 
 o/p: 220
+//Approch
+Hum har value include krka dekh rha hai kisa zyda value banega jisa banega wo maximum value return kr denga.
+but capacity zyda honi cahiya weight sa tabhi humlog us value ko lenga.
 
 int solve(vector<int>& weight, vector<int>& value, int i, int capacity){
     //base case
+    //jaisa value ki index zyda or knapsack ki capacity 0 hui return 0 karenga.
     if(i == value.size() || capacity == 0)
         return 0;
     
