@@ -80,3 +80,33 @@ int solve(vector<int>& days, vector<int>& costs,int index,vector<int>&dp){
         vector<int>dp(days.size()+1,-1);
         return solve(days,costs,0,dp);
     }
+
+//Tabular
+int solveTab(vector<int>& days, vector<int>& costs){
+            //step 1:create dp array
+            int n = days.size();
+            vector<int> dp(n+1,INT_MAX);
+
+            //step 2: base case initialization
+            dp[n] = 0;
+
+            //step 3 range find
+            for(int i = n-1;i>=0;i--){
+                int day1 = costs[0] + dp[i+1];
+
+                //7 day pass sold
+                int j;
+                for(j=i;j<days.size() && days[j] < days[i] + 7;j++);
+                int day2= costs[1] + dp[j];
+
+                //30 days pass sold
+                for(j=i;j<days.size() && days[j] < days[i]+30;j++);
+                int day3= costs[2] + dp[j];
+
+                dp[i] = min(day1,min(day2,day3));
+        }
+        return dp[0];
+    }
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        return solveTab(days,costs);
+    }
