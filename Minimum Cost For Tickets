@@ -1,0 +1,82 @@
+https://leetcode.com/problems/minimum-cost-for-tickets/
+days [2,5]
+cost [1,4,25]
+days - cost
+----  -----
+1day - 1
+7day - 4
+30day- 25              i
+                      [2,5][1,4,25],0
+                 1 days/   \ 7days \ 30 days
+                    i /     \   i   \    i
+                 [2,5],1   [2,5],4  [2,5],25
+                     /     
+                     i
+                [2,5],2
+                
+ min ans -> 2
+                
+int solve(vector<int>& days, vector<int>& costs,int index){
+        //agr index apka last day pe phuch chuka hai ya usas zyda aga bardh gai return kr do 0
+        if(index >= days.size()){
+            return 0;
+        }
+        
+        //1 day ka pass lia and bachi hui bhi problem solve krni hai islia recursion call kr dia
+        
+        int day1 = costs[0] + solve(days,costs,index+1);
+        
+        //7 day pass lia
+        //so hama index i ko bhi 7 din aga bardhana hoga
+        //condition
+        //i jo hai days array ka andar rahe
+        //jis bhi days pe hum phuch gai wo hamesa kam hona cahiya days[index] + 7
+              index
+              |
+        //Ex [1,2,5,7,20,35]
+              |
+              i
+        agr hum 1 day mai pass lelia tho 7 days tak chalega. so index and i same 1 day ko point kr rha hai so i ko 7 din aga lejana hai so i 7 tak aka loop ka 
+        bahar aajaiga
+        
+        int i;
+        for(i=index;i<days.size() && days[i] < days[index] + 7;i++);
+        int day2= costs[1] + solve(days,costs,i);
+        
+        //30 days pass sold
+        for(i=index;i<days.size() && days[i] < days[index]+30;i++);
+        int day3= costs[2] + solve(days,costs,i);
+        
+        return min(day1,min(day2,day3));
+    }
+    
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        return solve(days,costs,0);
+    }
+
+//rec+MeMo
+int solve(vector<int>& days, vector<int>& costs,int index,vector<int>&dp){
+        if(index == days.size()){
+            return 0;
+        }
+        
+        if(dp[index]!=-1)
+            return dp[index];
+        //1 day pass sold
+        int day1 = costs[0] + solve(days,costs,index+1,dp);
+        
+        //7 day pass sold
+        int i;
+        for(i=index;i<days.size() && days[i] < days[index] + 7;i++);
+        int day2= costs[1] + solve(days,costs,i,dp);
+        
+        //30 days pass sold
+        for(i=index;i<days.size() && days[i] < days[index]+30;i++);
+        int day3= costs[2] + solve(days,costs,i,dp);
+        
+        return dp[index]=min(day1,min(day2,day3));
+    }
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        vector<int>dp(days.size()+1,-1);
+        return solve(days,costs,0,dp);
+    }
