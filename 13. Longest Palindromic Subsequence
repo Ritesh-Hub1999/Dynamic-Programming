@@ -76,6 +76,38 @@ Approch:
     int longestPalindromeSubseq(string s) {
         string revStr = s;
         reverse(s.begin(),s.end());
-        vector<vector<int> >dp(s.length()+1,vector<int>(revStr.length(),-1));
+        vector<vector<int> >dp(s.length()+1,vector<int>(revStr.length()+1,-1));
         return solve(s,revStr,0,0,dp);
+    }
+
+
+Tabular
+-------
+int solveTab(string &s,string &revStr){
+        //creating Dp array
+        vector<vector<int> >dp(s.length()+1,vector<int>(revStr.length()+1,0));
+        
+        for(int i =s.length()-1;i>=0;i--){
+            for(int j=revStr.length()-1;j>=0;j--){
+                int ans = 0;
+            //if matches
+            if(s[i] == revStr[j]){
+                ans = dp[i+1][j+1] + 1;
+                }
+            //if no matches
+            else{
+                int option1 = dp[i+1][j];
+                int option2 = dp[i][j+1];
+                ans = max(option1,option2);
+                
+                }
+                dp[i][j] = ans;
+            }
+        }
+        return dp[0][0];
+    }
+    int longestPalindromeSubseq(string s) {
+        string revStr = s;
+        reverse(s.begin(),s.end());
+        return solveTab(s,revStr);
     }
