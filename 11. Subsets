@@ -1,0 +1,37 @@
+https://leetcode.com/problems/subsets/
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+
+Input: nums = [0]
+Output: [[],[0]]
+
+Here we will play the game of Inclusion and exclusion
+*NOTE* :- for subset and subsequences we need to play with inclusion and exclusion
+
+void solve(vector<int>& nums,vector<vector<int>>&ans,vector<int>&occurance,int index){
+        //basecase
+       //agr index bahar aajai array sa ans mai store kr lena jitna occurance aai honga
+       if(index == nums.size()){
+            ans.push_back(occurance);
+            return;
+       }
+       
+       //pehla include krta hai hum 
+       occurance.push_back(nums[index]);
+       solve(nums,ans,occurance,index+1);
+       
+       //we need to back track once we inlcude we need to exclude that too....
+       occurance.pop_back();
+       
+       //exclude
+       solve(nums,ans,occurance,index+1);
+
+   }
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> occurance;
+        int index = 0;
+        solve(nums,ans,occurance,index);
+        return ans;
+    }
