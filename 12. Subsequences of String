@@ -1,0 +1,38 @@
+https://www.codingninjas.com/codestudio/problems/subsequences-of-string_985087?leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=love_babbar_16
+
+Sample Input 1:
+1 
+abc
+Sample Output 1:
+a ab abc ac b bc c
+
+Approch :
+--------
+agr index string ka length sa bahar hojai tho ans mai store kr lenga jitna occurance aai honga
+
+include and exclude ki call jaigi 
+
+code:
+-----
+void solve(string str,string& occurance,int index,vector<string>& ans){
+	if(index == str.length()){
+        if(occurance.length()>0)
+            ans.push_back(occurance);
+        return;
+    }
+    //store the characters in occurance and put including call
+    occurance.push_back(str[index]);
+    solve(str, occurance,index+1,ans);
+    //wapas ata hua backtrack krna hoga
+    occurance.pop_back();
+    
+    //exclusion ki call krni hai
+    solve(str, occurance,index+1,ans);
+    
+}
+vector<string> subsequences(string str){
+	vector<string> ans;
+    string occurance = "";
+    solve(str, occurance,0,ans);
+    return ans;
+}
