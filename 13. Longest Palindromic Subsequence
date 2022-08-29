@@ -1,0 +1,81 @@
+https://leetcode.com/problems/longest-palindromic-subsequence/
+
+Example 1:
+
+Input: s = "bbbab"
+Output: 4
+Explanation: One possible longest palindromic subsequence is "bbbb".
+Example 2:
+
+Input: s = "cbbd"
+Output: 2
+Explanation: One possible longest palindromic subsequence is "bb".
+
+Approch:
+--------
+->first we need to reverse the given string. To find the palindrom.
+->than we gonna use Longest common subsequence(LCS) game. 
+->longest string so we need to give the maximum value
+
+//here we are using longest common subsequence game
+    int solve(string &s,string &revStr,int i, int j){
+        //base case
+        if(i == s.length())
+            return 0;
+        
+        if(j == revStr.length())
+            return 0;
+        
+        int ans = 0;
+        //if matches
+        if(s[i] == revStr[j]){
+            ans = solve(s,revStr,i+1,j+1) + 1;
+        }
+        //if no matches we are finding the longest string so we need to give the maximum value
+        else{
+            int option1 = solve(s,revStr,i+1,j);
+            int option2 = solve(s,revStr,i,j+1);
+            ans = max(option1,option2);
+        }
+            return ans;
+    }
+    int longestPalindromeSubseq(string s) {
+      //we are reversing the string
+        string revStr = s;
+        reverse(s.begin(),s.end());
+        
+        return solve(s,revStr,0,0);
+    }
+    
+    Rec + Memo
+    -----------
+    int solve(string &s,string &revStr,int i, int j,vector<vector<int>>&dp){
+        //base case
+        if(i == s.length())
+            return 0;
+        
+        if(j == revStr.length())
+            return 0;
+        
+        if(dp[i][j]!= -1)
+            return dp[i][j];
+        
+        int ans = 0;
+        //if matches
+        if(s[i] == revStr[j]){
+            ans = solve(s,revStr,i+1,j+1,dp) + 1;
+        }
+        //if no matches
+        else{
+            int option1 = solve(s,revStr,i+1,j,dp);
+            int option2 = solve(s,revStr,i,j+1,dp);
+            ans = max(option1,option2);
+        }
+            return dp[i][j] = ans;
+    }
+    int longestPalindromeSubseq(string s) {
+        string revStr = s;
+        reverse(s.begin(),s.end());
+        vector<vector<int> >dp(s.length()+1,vector<int>(revStr.length(),-1));
+        return solve(s,revStr,0,0,dp);
+    }
