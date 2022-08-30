@@ -1,0 +1,97 @@
+https://leetcode.com/problems/longest-increasing-subsequence/
+
+Example 1:
+
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+Example 2:
+
+Input: nums = [0,1,0,3,2,3]
+Output: 4
+Example 3:
+
+Input: nums = [7,7,7,7,7,7,7]
+Output: 1
+
+Approch:
+-------
+//base case 
+//agr current index array ka bahar chala jai tho return 0
+1. case huma starting array ka index ko hamesa include krna hai(so prev = -1 rahega us index ko condition mai put krna hoga)
+2. case include hum tab karenga jab hamaara element pichla wala sa bara hoga
+3. inclusion exclusion ki game(take ya notTake)
+
+code :-
+-----
+ int solve(vector<int>& nums,int curr,int prev){
+        
+        if(curr == nums.size())
+            return 0;
+        
+        
+        int take = 0;
+        if(prev == -1 || nums[prev] < nums[curr]){
+            take = 1 + solve(nums,curr+1,curr); 
+        }
+        
+        int notTake = solve(nums,curr+1,prev); 
+        
+        return max(take,notTake);
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        return solve(nums,0,-1);
+    }
+    
+    Rec + Memo
+    ----------
+    prev -> -1 sa n-1 taak ja rha hai
+             so yeah total n hogaya and -1 put karenga dp array mai so wo error through kr dega islia hum prev+1 le rha hai
+             
+       
+    int solve(vector<int>& nums,int curr,int prev,vector<vector<int> > &dp){
+        if(curr == nums.size())
+            return 0;
+        
+        if(dp[curr][prev+1] != -1)
+            return dp[curr][prev+1];
+         
+        int take = 0;
+        if(prev == -1 || nums[prev] < nums[curr]){
+            take = 1 + solve(nums,curr+1,curr,dp); 
+        }
+        
+        int notTake = solve(nums,curr+1,prev,dp); 
+        int ans = max(take,notTake);
+        
+        return dp[curr][prev+1] =ans;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        vector<vector<int> >dp(nums.size()+1,vector<int>(nums.size()+1,-1));
+        return solve(nums,0,-1,dp);
+    }
+    
+    
+    //using Binary search making it NlogN TC
+    ----------------------------
+     int lengthOfLIS(vector<int>& nums) {
+        vector<int> BS;
+        BS.push_back(nums[0]);
+        
+        for(int i = 1;i<nums.size();i++){
+            
+            //agr aga ka element bara hai
+            if(BS.back() < nums[i]){
+                BS.push_back(nums[i]);
+            }
+            
+            //agr nai hai tho lower bound(mtlb us value sa chota value mila usko tho uska aga wala value replace kr denga)
+            else{
+                int index = lower_bound(BS.begin(),BS.end(),nums[i]) - BS.begin();
+                
+                BS[index] = nums[i];
+            }
+        }
+        return BS.size();
+    }
+    
