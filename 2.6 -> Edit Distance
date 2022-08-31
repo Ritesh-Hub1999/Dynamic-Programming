@@ -1,0 +1,101 @@
+https://leetcode.com/problems/edit-distance/
+Example 1:
+---------
+Input: word1 = "horse", word2 = "ros"
+Output: 3
+Explanation: 
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+
+Example 2:
+----------
+Input: word1 = "intention", word2 = "execution"
+Output: 5
+Explanation: 
+intention -> inention (remove 't')
+inention -> enention (replace 'i' with 'e')
+enention -> exention (replace 'n' with 'x')
+exention -> exection (replace 'n' with 'c')
+exection -> execution (insert 'u')
+
+Hint:
+-----
+You have the following three operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+
+Approch:
+---------
+Step 1: agr char match hojai tho aga ka lia call kr denga
+step 2: agr char match na hoi tho hum 3 game khelenga Insert,Delete,Replace
+            
+           i
+           0 1 2 3 4           
+insert:  r h o r s e (Hum yaha r insert kia hai i wahi rahega and j+1 qki wo inser ho chuka hai)
+          \   
+           r o s
+           0 1 2
+           j
+         
+         i i+1
+         0 1 2 3 4
+Delete:  h o r s e  (agr hum r and h match nai hua so h ko delete kr dia i+1 and j wahi ka wahi raah jaiga)
+
+         r o s
+         0 1 2
+         j
+         
+           i i+1
+ replace : h o r s e (agr h ko replace kr dia r sa. so i+1 and j+1 hojaiga)
+           
+           r o s
+           j j+1
+           
+ step 3 : Base case
+          
+          
+ 
+ code:
+ ----
+ int solve(string word1, string word2,int i,int j){
+        //basecase
+        
+        //1.basecase-> agr word1 ka index pass hojaiga tho word2 ka length ko - kr do index sa
+        if(i == word1.length()){
+            return word2.length() - j;
+        }
+        
+        //2.basecase-> agr word2 ka index pass hojaiga tho word1 ka length ko - kr do index sa
+        if(j == word2.length()){
+            return word1.length() - i;
+        }
+        
+        //agr char match hojai tho aga ka lia call kr denga
+        int ans = 0;
+        if(word1[i] == word2[j]){
+            ans = solve(word1,word2,i+1,j+1);
+        }
+        
+        //agr char match nai hua tho 3 call jaiga 
+        //Insert a character
+        //Delete a character
+        //Replace a character
+        
+        else{
+            int insert = 1 + solve(word1,word2,i,j+1) ;
+            
+            int del = 1 + solve(word1,word2,i+1,j) ;
+            
+            int replace = 1 + solve(word1,word2,i+1,j+1);
+            
+            ans = min(insert,min(del,replace));
+        }
+        
+        return ans;
+    }
+    int minDistance(string word1, string word2) {
+        return solve(word1,word2,0,0);
+    }
