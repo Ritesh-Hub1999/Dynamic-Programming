@@ -2,6 +2,7 @@ question link: https://leetcode.com/problems/coin-change/
 int solve(vector<int>& coins, int amount){
        //base case
         //agr amount 0 hojai minus krta hua coins sa tho zero return kr dena
+        //bina coin ka zero banainga
         if(amount == 0){
             return 0;
         }
@@ -13,9 +14,9 @@ int solve(vector<int>& coins, int amount){
         int mini = INT_MAX;
         
         for(int i=0;i<coins.size();i++){
-            int ans = solve(coins,amount - coins[i]);
+            int ans = solve(coins,amount - coins[i]) + 1;
             if(ans!=INT_MAX){
-                mini = min(ans+1,mini);
+                mini = min(ans,mini);
             }
         }
     
