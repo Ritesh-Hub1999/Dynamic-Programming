@@ -99,3 +99,49 @@ Delete:  h o r s e  (agr hum r and h match nai hua so h ko delete kr dia i+1 and
     int minDistance(string word1, string word2) {
         return solve(word1,word2,0,0);
     }
+
+rec+Memo
+--------
+int solve(string word1, string word2,int i,int j,vector<vector<int> > &dp){
+        //basecase
+        
+        //1.basecase-> agr word1 ka index pass hojaiga tho word2 ka length ko - kr do index sa
+        if(i == word1.length()){
+            return word2.length() - j;
+        }
+        
+        //2.basecase-> agr word2 ka index pass hojaiga tho word1 ka length ko - kr do index sa
+        if(j == word2.length()){
+            return word1.length() - i;
+        }
+        
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+        //agr char match hojai tho aga ka lia call kr denga
+        int ans = 0;
+        if(word1[i] == word2[j]){
+            ans = solve(word1,word2,i+1,j+1,dp);
+        }
+        
+        //agr char match nai hua tho 3 call jaiga 
+        //Insert a character
+        //Delete a character
+        //Replace a character
+        
+        else{
+            int insert = 1 + solve(word1,word2,i,j+1,dp) ;
+            
+            int del = 1 + solve(word1,word2,i+1,j,dp) ;
+            
+            int replace = 1 + solve(word1,word2,i+1,j+1,dp);
+            
+            ans = min(insert,min(del,replace));
+        }
+        
+        return dp[i][j]=ans;
+    }
+    int minDistance(string word1, string word2) {
+        vector<vector<int> >dp(word1.size()+1,vector<int>(word2.size()+1,-1));
+        return solve(word1,word2,0,0,dp);
+    }
