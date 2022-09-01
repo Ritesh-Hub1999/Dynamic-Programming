@@ -1,0 +1,88 @@
+https://leetcode.com/problems/combination-sum-iv/
+
+Example 1:
+----------
+Input: nums = [1,2,3], target = 4
+Output: 7
+Explanation:
+The possible combination ways are:
+(1, 1, 1, 1)
+(1, 1, 2)
+(1, 2, 1)
+(1, 3)
+(2, 1, 1)
+(2, 2)
+(3, 1)
+Note that different sequences are counted as different combinations.
+
+Example 2:
+----------
+Input: nums = [9], target = 3
+Output: 0
+
+Approch:
+-------
+Humma har ek array ka element ko use krka dekhna hai ky wo zero bana rha hai.agr zero banega tho ek element use krka hi bana hoga.
+So jb taak wo target ko zero nai banata so hum us element ko use krta jainga.
+So, isma hum for loop wala game khelenga
+
+code:
+-----
+Recursion:
+----------
+int solve(vector<int>& nums, int target,int n){
+        //basecase
+       //agr target zero hojai tho koi na koi array ka element use kia hai apan na
+        if(target == 0){
+            return 1;
+        }
+        
+        if(target < 0){
+            return 0;
+        }
+        
+        int ans = 0;
+        
+        for(int i=0;i<n;i++){
+            ans = ans + solve(nums,target - nums[i],n);
+        }
+        
+        return ans;
+    }
+    
+    int combinationSum4(vector<int>& nums, int target) {
+        int n = nums.size();
+        return solve(nums,target,n);
+    }
+    
+    Recursion+Memo
+    --------------
+    int solve(vector<int>& nums, int target,int n,vector<int> &dp){
+        //basecase
+       //agr target zero hojai tho koi na koi array ka element use kia hai apan na
+        if(target == 0){
+            return 1;
+        }
+        
+        if(target < 0){
+            return 0;
+        }
+        
+        if(dp[target]!=-1)
+            return dp[target];
+        
+        
+        int ans = 0;
+        
+        for(int i=0;i<n;i++){
+            ans = ans + solve(nums,target - nums[i],n,dp);
+        }
+        
+        return dp[target]=ans;
+    }
+    
+    int combinationSum4(vector<int>& nums, int target) {
+        int n = nums.size();
+        vector<int> dp(target + 1,-1);
+        return solve(nums,target,n,dp);
+    }
