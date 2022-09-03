@@ -1,8 +1,34 @@
 question link: https://leetcode.com/problems/coin-change/
+
+Example 1:
+---------
+Input: coins = [1,2,5], amount = 11
+Output: 3
+Explanation: 11 = 5 + 5 + 1
+
+
+Example 2:
+--------
+Input: coins = [2], amount = 3
+Output: -1
+
+Approch
+-------
+step 1-> hum har coin use karenga amount ko zero krna ka lia ans usa ek variable mai store karenga
+base-case
+--------
+step 2-> jaisa zero hua tho return zero karenga qki bina coin ka zero banainga
+base-case
+---------
+step 3-> agr amount negative mai chala jai tho apan INT_MAX return karenga 
+
+step 4-> mini mai store karenga min ans+1 ans return kr denga mini ko.
+
 int solve(vector<int>& coins, int amount){
-       //base case
-        //agr amount 0 hojai minus krta hua coins sa tho zero return kr dena
-        //bina coin ka zero banainga
+        // base case
+        // agr amount 0 hojai minus krta hua coins sa tho zero return kr dena
+        // bina coin ka zero banainga
+        
         if(amount == 0){
             return 0;
         }
