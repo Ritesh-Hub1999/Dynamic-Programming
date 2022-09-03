@@ -9,6 +9,7 @@ o/p -> 0
 i/p n=2 {0,1}
 o/p -> 1 {1,0}
 #approch:-
+--------
 //age single value hai array mai tho wo derangement nai ho skta tho return o
 //agr two values hai array mai tho wo ek hi baar dearange ho skta hai tho return 1
  //{0,1,2,3,4,........i,....,n} -> 0 ko arrange krna ka lia n-1 possibilities hai siwai uska indek ko chor kr.
