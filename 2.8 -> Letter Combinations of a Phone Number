@@ -12,6 +12,21 @@ Example 3:
 
 Input: digits = "2"
 Output: ["a","b","c"]
+                                                             i    o/p
+                                                            "2 3"," "
+2-> abc                                                    /  |  \
+3-> def                                                  a/  b|   \c
+                                                  i      /    |    \   i
+                                               "2 3","a"      |     "2 3","c"
+                                              /   |  \      i |
+                                             /    |   \  "2 3","b"   
+                                          d /    e|    \f
+                                           /      |     \
+                                         i/       |      \    i
+                                    "2 3","a d"   |      "2 3","a f"
+                                                 i|
+                                            "2 3","a e"    
+
 
 Approch:
 --------
