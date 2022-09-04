@@ -1,0 +1,54 @@
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = ""
+Output: []
+Example 3:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+
+Approch:
+--------
+-> hum har character ko le rha hai kis index sa konsa map hai string.
+-> phr har string ka character leka hum usa push kr rha hai string mai and usa vector mai store kr le rha hai.
+-> So islia hum yaha for loop use kr rha.
+-> and har char ko output mai push kr denga.
+
+basecase:
+---------
+agr index digits ka length sa bahar hojai tho ans mai push kr denga.
+
+code:
+-----
+void solve(string digits,vector<string>&ans,string output,int index,string map[]){
+        if(index == digits.length()){
+            ans.push_back(output);
+            return;
+        }
+        
+        int element = digits[index] - '0';
+        string value = map[element];
+        
+        for(int i = 0;i<value.size();i++){
+            output.push_back(value[i]);
+            solve(digits,ans,output,index+1,map);
+            output.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        vector<string>ans;
+        if(digits.size()==0){
+            return ans;
+        }
+        string output = "";
+        int index = 0;
+        string map[10] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        solve(digits,ans,output,index,map);
+        return ans;
+    }
