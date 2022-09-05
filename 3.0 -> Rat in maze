@@ -1,0 +1,73 @@
+https://www.codingninjas.com/codestudio/problems/rat-in-a-maze_1215030?topList=love-babbar-dsa-sheet-problems&leftPanelTab=0&utm_source=youtube&utm_medium=affiliate&utm_campaign=Lovebabbar
+
+Sample Input 1:
+4
+1 0 0 0 
+1 1 0 1
+1 1 0 0
+0 1 1 1
+Sample Output 1:
+DDRDRR DRDDRR
+
+Approch:
+--------
+src->(0,0)
+dest->(n-1,n-1)
+
+up,down,left,right ->movement
+
+1->open path hai ja sakta hai
+0-> closed path hai nai ja sakta
+
+
+movement safe kb hai:
+------------
+-> jab nicha,upar,ya left,right == 1 hoga (arr[x][y] == 1) .
+-> visited[x][y] != 1 hona cahiya means pehla sa visited nai hona cahiya.
+-> jaha bhi ap ja rha ho wo matrix ka andar hona cahiya. (x>=0 && x<n) && (y>=0 && y<n)
+    
+code:
+-----
+bool isSafe(int x,int y,vector < vector < int >> & arr,int n,vector<vector<bool>>&visited){
+    if((x>=0 && x<n) && (y>=0 && y<n) && (visited[x][y]!=1) && (arr[x][y]==1)){
+        return true;
+    }
+    else
+        return false;
+}
+
+void solve(int x,int y,vector < vector < int >> & arr, int n,vector < string >ans,vector<vector<bool>>&visited,string track){
+
+  //agr x and y last index pe phuch gaya tho ans mai store kr lenga jo track kia hai humna
+    if(x==n-1 && y==n-1){
+        ans.push_back(track);
+        return;
+    }
+    visited[x][y]=1;
+    //down jana sahi hai
+    if(isSafe(x+1,y,arr,n,visited)){
+        solve(x+1,y,arr,n,ans,visited,track+'D');
+    }
+    //left jana sahi hai
+    if(isSafe(x,y-1,arr,n,visited)){
+        solve(x,y-1,arr,n,ans,visited,track+'L');
+    }
+    //RIGHT jana sahi hai
+    if(isSafe(x,y+1,arr,n,visited)){
+        solve(x,y+1,arr,n,ans,visited,track+'R');
+    }
+    //UP jana sahi hai
+    if(isSafe(x-1,y,arr,n,visited)){
+       solve(x-1,y,arr,n,ans,visited,track+'U');
+    }
+    visited[x][y]=0;
+    
+}
+vector < string > searchMaze(vector < vector < int >> & arr, int n) {
+    vector < string >ans;
+    //creating a visited array
+    vector<vector<bool>>visited(n,vector<bool>(n,0));
+    string track="";
+    solve(0,0,arr,n,ans,visited,track);
+    return ans;
+}
