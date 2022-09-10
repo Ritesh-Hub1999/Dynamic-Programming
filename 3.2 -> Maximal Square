@@ -1,0 +1,72 @@
+https://leetcode.com/problems/maximal-square/
+
+1-> hai tho square banana posible hai
+0-> hai tho not possible hai
+
+Example 1:
+----------
+Input: n = 2, m = 2
+mat = {{1, 1}, 
+       {1, 1}}
+Output: 2
+Explaination: The maximum size of the square
+sub-matrix is 2. The matrix itself is the 
+maximum sized sub-matrix in this case.
+
+Example 2:
+----------
+Input: n = 2, m = 2
+mat = {{0, 0}, 
+       {0, 0}}
+Output: 0
+Explaination: There is no 1 in the matrix.
+
+Approch:
+--------
+-> base case
+  -----------
+   -> agr index matrix ka range sa bahar chala jai tho return zero.
+ 
+-> right sa ans aiga so ek right ka lia call jaiga
+   right jana ka lia col/j + 1 krna hoga
+   
+-> diagonal sa ans aiga ek digonal ka lia call jaiga
+   diagonal jana ka lia row/i + 1 and col/j + 1 krna hoga
+   
+-> down sa ans aiga so ek baar down ka lia call jaiga
+   down jana ka lia row/i + 1 krna hoga
+
+-> square hamesa 1 sa hi baan sakta hai so jaha khara 
+   honga waha 1 hona cahiya tabhi valid square banega.
+   
+-> ans right sa bhi aya hoga (jaisa right sa 1 aya)
+   ans diagonally bhi aya hoga( diagonally sa 3 aya)
+   ans down sa bhi aya hoga (down sa 2 aya)
+   tho uska minimam lenga 
+  
+Code:
+----
+int  solve(vector<vector<int>> &mat,int i,int j,int &maxi){
+        if(mat.size() <= i || mat[0].size()<=j){
+            return 0;
+        }
+        
+        int right = solve(mat,i,j+1,maxi);
+        int diagonal = solve(mat,i+1,j+1,maxi);
+        int down = solve(mat,i+1,j,maxi);
+        
+        if(mat[i][j] == 1){
+            int ans = 1 + min(right,min(diagonal,down));
+            maxi = max(maxi,ans);
+            return ans;
+        }
+        else{
+            return 0;
+        }
+    }
+    
+    int maxSquare(int n, int m, vector<vector<int>> mat){
+        int maxi = 0;
+        solve(mat,0,0,maxi);
+        return maxi;
+    }
