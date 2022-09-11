@@ -1,0 +1,55 @@
+https://leetcode.com/problems/minimum-score-triangulation-of-polygon/
+
+Example 1:
+----------
+Input: values = [1,2,3]
+Output: 6
+Explanation: The polygon is already triangulated, and the score of the only triangle is 6.
+
+Example 2:
+---------
+Input: values = [3,7,4,5]
+Output: 144
+Explanation: There are two triangulations, with possible scores: 3*7*5 + 4*5*7 = 245, or 3*4*5 + 3*4*7 = 144.
+The minimum score is 144.
+
+-> yaha hama traingal form rkrna hai polygon mai
+
+Approch:
+--------
+
+step 1(BaseCase:)-> first element and last element hamesa adj hoga.
+          so, agr edge agal bagal hua tho ek straight line
+          hojaigi triangle create nai kr painga.
+          if(i+1 == j) return 0;
+          
+step 2: traingle create krna ka lia aur ek element cahiya.
+        so, humna K lelia hai
+        
+step 3: hum yaha har ek element sa triangle bana kar dekhenga.
+        so, us har ek element ko choice krna ka lia for loop 
+        use krna hoga.
+        
+step 4: ans variable bana lo so apan usma min store karenga area ka.
+        values[i]*values[j]*values[k] + sub_problem
+        
+code:
+----
+int solve(vector<int>& values,int i,int j){
+        //base case 
+        if(i+1 == j){
+            return 0;
+        }
+        
+        int ans = INT_MAX;
+        
+        for(int k=i+1;k<j;k++){
+            ans = min(ans,values[i]*values[j]*values[k]+solve(values,i,k)+solve(values,k,j));
+        }
+        return ans;
+    }
+    int minScoreTriangulation(vector<int>& values) {
+        return solve(values,0,values.size()-1);
+    }
+    
+ 
