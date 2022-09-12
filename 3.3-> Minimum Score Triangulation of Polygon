@@ -52,4 +52,54 @@ int solve(vector<int>& values,int i,int j){
         return solve(values,0,values.size()-1);
     }
     
+ Code Tabulation:
+ ---------------
+  int solve(vector<int>& values,int i,int j,vector<vector<int>> &dp){
+        //base case 
+        if(i+1 == j){
+            return 0;
+        }
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+        int ans = INT_MAX;
+        
+        for(int k=i+1;k<j;k++){
+            dp[i][j] = min(ans,values[i]*values[j]*values[k]+solve(values,i,k,dp)+solve(values,k,j,dp));
+            ans = dp[i][j];
+        }
+        return ans;
+    }
+    
+ code Bottom Up Approch:
+ -------------------------
+ -> rec: i 0 sa n-1 taak hal rha tha but isma
+         i n-1 sa 0 taak chalega.
  
+ -> j ko i sa start nai kr skta qki single point hojaiga
+    so singl point sa triangle nai bana sakta
+    
+    j ko i+1 sa bhi start nai kr skta qki wo 2 point hojaiga
+    
+    j ko i+1 sa start karenga
+ 
+ int solveTab(vector<int>& values){
+        int n = values.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,0));
+        
+        for(int i=n-1;i>=0;i--){
+            for(int j=i+2;j<n;j++){
+                int ans = INT_MAX;
+                for(int k=i+1;k<j;k++){
+                    ans = min(ans,values[i]*values[j]*values[k]+dp[i][k]+dp[k][j]);
+                    
+                }
+                dp[i][j] = ans;
+            }
+        }
+        return dp[0][n-1];
+    }
+    
+    int minScoreTriangulation(vector<int>& values) {
+        return solveTab(values);
+    }
