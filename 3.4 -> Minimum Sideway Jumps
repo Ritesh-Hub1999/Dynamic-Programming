@@ -1,0 +1,106 @@
+https://leetcode.com/problems/minimum-sideway-jumps/
+
+Example 1:
+----------
+Input: obstacles = [0,1,2,3,0]
+Output: 2 
+
+Explanation: The optimal solution is shown by the arrows above. There are 2 side jumps (red arrows).
+Note that the frog can jump over obstacles only when making side jumps (as shown at point 2).
+-----------------------------------------
+frog lane 2 pe khara hai                   |
+and pos frog ki 0 hai                      |
+target hai array ka end pos pephuchna      |
+by min number of side wise jumps.          |
+
+*frog ka jump karna ka 3 options hai(left, |
+ right,sidha)
+                                           |
+but sidha jump krna ko side wise jump nai  |
+kahta.(so hum same lane pe jump nai kar    |
+sakta)                                     |
+                                           |
+jaha jump kr rha waha obs na para ho       |
+                                           |
+--------------------------------------------
+
+Approch:
+-------
+->Basecase: Agr end wala pos pe phuch gai tho
+            return kar denga 0
+
+-> Agr obstracle same lane mai nai para ho
+  tab sidha move karenga
+  if(obs[currpos+1] != sameLane)
+      sidhamove karenga
+      
+-> Agr obstracles hai tho left right jump krna hai 
+  and hum same lane pe jump nai kar sakta 
+              samelane != i
+                &&
+   jaha jump kr raha waha obstracle nai hona cahiya
+   
+-> hamara pass multiple approch hai jump krna ki
+   so hum har ek approch ko consider karenga
+   so, we hum yaha for loop wala game khelenga
+   
+code:
+----
+int solve(vector<int>& obstacles,int currLane,int currPos){
+        //basecase
+        if(currPos == obstacles.size()-1){
+            return 0;
+        }
+        
+        //check sidha ja skta hai
+        if(obstacles[currPos+1] != currLane){
+            return solve(obstacles,currLane,currPos+1);
+        }
+        
+        //agr jaha obstracle hai side jump kar skta hai
+        else{
+            int ans = INT_MAX;
+            for(int i=1;i<=3;i++){
+                if(currLane != i && obstacles[currPos]!=i )
+                    ans = min(ans,1+solve(obstacles,i,currPos));
+            }
+            return ans;
+        }
+    }
+    int minSideJumps(vector<int>& obstacles) {
+        int currPos = 0;
+        int currLane = 2;
+        return solve(obstacles,currLane,currPos);
+    }
+    
+ Tabulation:
+ -----------
+ int solveTab(vector<int>& obstacles,int currLane,int currPos,vector<vector<int> > &dp){
+        //basecase
+        if(currPos == obstacles.size()-1){
+            return 0;
+        }
+        if(dp[currLane][currPos]!=-1)
+            return dp[currLane][currPos];
+        //check sidha ja skta hai
+        if(obstacles[currPos+1] != currLane){
+            return solveTab(obstacles,currLane,currPos+1,dp);
+        }
+        
+        //agr jaha obstracle hai side jump kar skta hai
+        else{
+            int ans = INT_MAX;
+            for(int i=1;i<=3;i++){
+                if(currLane != i && obstacles[currPos]!=i )
+                    ans = min(ans,1+solveTab(obstacles,i,currPos,dp));
+            }
+            return dp[currLane][currPos] = ans;
+        }
+    }
+    int minSideJumps(vector<int>& obstacles) {
+        int n = obstacles.size();
+        vector<vector<int>>dp(4,vector<int>(n,-1));
+        int currPos = 0;
+        int currLane = 2;
+        return solveTab(obstacles,currLane,currPos,dp);
+    }
