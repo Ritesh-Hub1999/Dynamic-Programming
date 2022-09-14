@@ -85,7 +85,7 @@ code :-
                 BS.push_back(nums[i]);
             }
             
-            //agr nai hai tho lower bound(mtlb us value sa chota value mila usko tho uska aga wala value replace kr denga)
+            //find index of just bada element in ans
             else{
                 int index = lower_bound(BS.begin(),BS.end(),nums[i]) - BS.begin();
                 
