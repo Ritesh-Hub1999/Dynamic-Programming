@@ -1,0 +1,60 @@
+https://leetcode.com/problems/pizza-with-3n-slices/submissions/
+
+Example 1:
+----------
+Input: slices = [1,2,3,4,5,6]
+Output: 10
+Explanation: Pick pizza slice of size 4, Alice and Bob will pick slices with size 3 and 5 respectively. Then Pick slices with size 6, finally Alice and Bob will pick slice of size 2 and 1 respectively. Total = 4 + 6.
+
+Example 2:
+----------
+Input: slices = [8,9,8,6,1,1]
+Output: 16
+Explanation: Pick pizza slice of size 8 in each turn. If you pick slice with size 9 your partners will pick slices of size 8.
+
+Approch:
+-------
+-> So,3n slices hai pizza mai n+n+n karka batenga
+ agr k size hai pizza ka tho k/3 hi har koi kha paiga.
+ 
+-> so har koi alternate krka slices uthaiga. Agr hum 
+  ek slice uthai tho uska baadwala slice hum nai utha painga
+  
+-> yaha slices pizza ka circular form mai hai.
+          
+                    4
+                 3      5
+                 2      6
+                    1
+                    
+     2 case banega :
+     -> pehla khaya tho last wala nai kha skta. 0 -> pizza.size()-2
+     ->last khaya tho pehla nai kha sakta. 1 -> pizza.size()-1
+  
+//basecase:
+-> pizza tab taak kha sakta hai jabtak koi slice nai bacha hoga.
+-> ya tho index number of slices sa bahar chala jaiga
+
+
+
+code:
+-----
+ int solve(vector<int>& slices,int i,int k,int n){
+        //basecase
+        //agr pizza pura khaa lia 
+        //agr index slices ka size sa bara hogaya 
+        if(i > k || n==0)
+            return 0;
+        
+        int include = slices[i] + solve(slices,i+2,k,n-1);
+        
+        int exclude = solve(slices,i+1,k,n);
+        
+        return max(include,exclude);
+    }
+    int maxSizeSlices(vector<int>& slices) {
+        int k = slices.size();
+        int case1 = solve(slices,0,k-2,k/3);
+        int case2 = solve(slices,1,k-1,k/3);
+        return max(case1,case2);
+    }
