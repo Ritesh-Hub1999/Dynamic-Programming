@@ -5,6 +5,21 @@ Sample Input 1:
 7 5 2 2
 8 3 3 3
 
+Approch:
+-------
+step1 -> har 3 value ka help sa hum us iron ko cut karka dekhenga
+
+BASE CASE
+---------
+step2 -> agr iron ka size 0 hojai tho return 0 kr do
+
+step3 -> agr iron ka size minus mai chala jai tho return MINIMUM
+
+step4 -> agr ans mai MINIMUM aata hai tho return 0
+	              or
+	return ans
+code:
+-----
 #include <limits.h>
 int maxCutting(int n, int x, int y, int z){
     //base case
