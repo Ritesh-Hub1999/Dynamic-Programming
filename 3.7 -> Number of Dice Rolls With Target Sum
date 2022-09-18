@@ -1,0 +1,125 @@
+https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/
+
+Example 1:
+Input: n = 1, k = 6, target = 3
+Output: 1
+Explanation: You throw one die with 6 faces.
+There is only one way to get a sum of 3.
+Example 2:
+
+Input: n = 2, k = 6, target = 7
+Output: 6
+Explanation: You throw two dice, each with 6 faces.
+There are 6 ways to get a sum of 7: 1+6, 2+5, 3+4, 4+3, 5+2, 6+1.
+Example 3:
+
+Input: n = 30, k = 30, target = 500
+Output: 222616187
+Explanation: The answer must be returned modulo 109 + 7
+
+N -> no of Dice
+M -> No. of faces
+X -> Target Sum
+
+Approch:
+--------
+hum kitna tarika sa target bana sakta hai.
+So,it means distinct ways niaklna hai
+
+so har dice mai jitna faces dia hai unko use karka 
+target sa minus karna hai(so we gonna use for loop)
+
+step 1: Isma 4 base cases baan sakta hai
+
+baseCase1 : target ko zero sa kaam krna ka lia 0 possibility hai
+----------
+baseCase2 : agr noOfDice 0 hai and target 6 hai tho bina dice ka 
+----------  hum 0 nai bana sakta hai
+
+baseCase 3: agr target 0 hai and dice hai tho hum target bana nai 
+----------  sakta 
+
+baseCase 4: agr target 0 hai and dice 0 hai tho ek possibility hai
+----------- bina dice feka hum 0 target bana sakta hai.
+            So, return 1 hoga.
+    
+Code Rec:
+--------
+#define MOD 1000000007
+class Solution {
+public:
+    int solve(int noOfDice, int faces, int target){
+        //target ko zero sa kaam krna ka lia 0 possibility hai
+        if(target < 0)
+            return 0;
+        
+        //agr noOfDice 0 hai and target 6 hai
+        //tho hum 0 dice sa target nai bana sakta 
+        if(noOfDice == 0 && target != 0)
+            return 0;
+        
+        if(noOfDice != 0 && target == 0)
+            return 0;
+        
+        //agr target 0 hai and dice 0 hai
+        //tho 0 dice fakenga tho 0 hi banega
+        //tho 1 tarika sa 0 bana sakta hai
+        if(noOfDice == 0 && target == 0)
+            return 1;
+        
+        int noOfWays = 0;
+        
+        //hum jis bhi dice pe hai un sara ka faces ko
+        //utilize karna hai
+        for(int i= 1;i<=faces ;i++){
+            noOfWays = (noOfWays%MOD) + (solve(noOfDice - 1,faces, target - i)%MOD);
+        }
+        
+        return (noOfWays%MOD);
+    }
+    long long numRollsToTarget(int n, int k, int target) {
+        return solve(n,k,target); 
+    }
+};
+Code(Rec+Memo):
+-------------
+#define MOD 1000000007
+class Solution {
+public:
+    int solve(int noOfDice, int faces, int target,vector<vector<int>> &dp){
+        //target ko zero sa kaam krna ka lia 0 possibility hai
+        if(target < 0)
+            return 0;
+        
+        //agr noOfDice 0 hai and target 6 hai
+        //tho hum 0 dice sa target nai bana sakta 
+        if(noOfDice == 0 && target != 0)
+            return 0;
+        
+        // if(noOfDice != 0 && target == 0)
+        //     return 0;
+        
+        //agr target 0 hai and dice 0 hai
+        //tho 0 dice fakenga tho 0 hi banega
+        //tho 1 tarika sa 0 bana sakta hai
+        if(noOfDice == 0 && target == 0)
+            return 1;
+        
+        if(dp[noOfDice][target] != -1)
+            return dp[noOfDice][target];
+            
+        int noOfWays = 0;
+        
+        //hum jis bhi dice pe hai un sara ka faces ko
+        //utilize karna hai
+        for(int i= 1;i<=faces ;i++){
+            noOfWays = (noOfWays%MOD) + (solve(noOfDice - 1,faces, target - i,dp)%MOD);
+        }
+        
+        return dp[noOfDice][target]=(noOfWays%MOD);
+    }
+    long long numRollsToTarget(int n, int k, int target) {
+        vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
+        return solve(n,k,target,dp); 
+    }
+};
