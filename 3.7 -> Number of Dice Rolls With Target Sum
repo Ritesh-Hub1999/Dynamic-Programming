@@ -18,8 +18,8 @@ Output: 222616187
 Explanation: The answer must be returned modulo 109 + 7
 
 N -> no of Dice
-M -> No. of faces
-X -> Target Sum
+K -> No. of faces
+Target -> Target Sum
 
 Approch:
 --------
