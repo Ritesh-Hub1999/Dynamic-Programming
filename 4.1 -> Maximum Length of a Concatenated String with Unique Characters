@@ -1,0 +1,116 @@
+https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/description/
+
+Example 1:
+----------
+Input: arr = ["un","iq","ue"]
+Output: 4
+
+Explanation: All the valid concatenations are:
+- ""
+- "un"
+- "iq"
+- "ue"
+- "uniq" ("un" + "iq")
+- "ique" ("iq" + "ue")
+Maximum length is 4.
+
+Example 2:
+---------
+Input: arr = ["cha","r","act","ers"]
+Output: 6
+Explanation: Possible longest valid concatenations are "chaers" ("cha" + "ers") and "acters" ("act" + "ers").
+
+Example 3:
+----------
+Input: arr = ["abcdefghijklmnopqrstuvwxyz"]
+Output: 26
+Explanation: The only string in arr has all 26 characters.
+
+Approch:
+--------
+1. In this question, we have to find the maximum length of the string which we can find using all the strings present in arr vector. 
+    We are not bothered about the string we form but only about the maximum length. The only criteria is that the string formed shouldn't 
+    have repeating characters. 
+    
+2. To know the string doesn't have repeating characters, we need to use a selected vector which will tell us whether one character has been 
+    previously selected or not. 
+    
+3. If a character is previously selected, we will simply ignore that string. Also if a string itself has repeating characters we can't include
+   it inside our final answer string. 
+   
+4. To check if the string has repeating characters or if the string has some characters from previously used strings, we need to use a bool 
+    compare() function which returns true if the string has unique characters and no overlapping characters with any other taken string. 
+    Else returns false 
+    
+5. The base case is very simple-
+    if( i >= arr.size() )
+    We have traversed through the entire vector of strings so we should return the length of the valid string collected so far 
+    
+6. Else we will first check whether we could include currString= arr[i] into our final answer or not using compare() function
+
+7. If currString is not valid, we simply move i to the next index
+
+8. Else we pick currString so we need to mark all the characters of currString as present inside selected vector, increment len by currString.size() and call for i+1
+
+9. And now if we don't currString, we backtrack and unmark all it's characters, decrement len by currString.size() and check for i+1
+
+10. Lastly we return the max of pick and don't pick. 
+
+Code:
+----
+bool check(vector<int> &selected,string currString){
+        vector<int> selfCheck(26,0);
+
+        for(int i=0;i<currString.length();i++){
+            if(selfCheck[currString[i] - 'a'] == 1){
+                return false;
+            }
+            selfCheck[currString[i] - 'a'] = 1;
+        }
+
+        for(int i=0;i<currString.length();i++){
+            if(selected[currString[i] - 'a'] == 1){
+                return false;
+            }
+        }
+
+        return true;
+    }
+    int solve(vector<string>& arr,int i,vector<int> &selected,int len){
+        //agr index sa bahar chala gaya array ka thos samjh jao len ban gaya hai 
+        if(i >= arr.size()){
+            return len;
+        }
+
+        string currString = arr[i];
+
+        //check karenga selected mai present hai ya nai wo currString ka char
+        if(check(selected,currString) == false){
+            //agr false aya tho wo string check nai karenga
+            return solve(arr,i+1,selected,len);
+        }
+        else{
+            //agr char repeted nai hai take ya not take ka game khelenga
+
+            // take ka game khel rha hai agr take kar rha hai tho selected mai mark kr denga wo char
+            for(int i=0;i<currString.length();i++){
+                selected[currString[i] - 'a'] = 1;
+            }
+            len += currString.length();
+            int op1 = solve(arr,i+1,selected,len);
+
+            // agr take nai kar rha hai tho wo char vector mai 0 mark kar denga
+            for(int i=0;i<currString.length();i++){
+                selected[currString[i]-'a'] = 0;
+            }
+            len -= currString.length();
+            int op2 = solve(arr,i+1,selected,len);
+
+            return max(op1,op2);
+        }
+    }
+    int maxLength(vector<string>& arr) {
+        //pehla ek array banao jo check karega selected char ek hi baar present hai na
+        vector<int>selected(26,0);
+        return solve(arr,0,selected,0);
+    }
